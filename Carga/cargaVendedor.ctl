@@ -1,7 +1,7 @@
 OPTIONS (SKIP=1)
 LOAD DATA
 CHARACTERSET UTF8
-INFILE '/home/oracle/[BD2]Vendedore.csv'
+INFILE '/home/oracle/[BD2]Vendedor.csv'
 BADFILE 'cargaVendedor.bad'
 DISCARDFILE 'cargaVendedor.dsc'
 TRUNCATE
