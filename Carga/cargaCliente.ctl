@@ -11,6 +11,6 @@ FIELDS terminated by ','
    id_cliente,
    nombre_cliente,
    apellido_cliente,
-   edad_cliente,
-   direccion_cliente
+   direccion_cliente,
+   dpi_cliente
 )

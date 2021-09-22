@@ -10,6 +10,6 @@ FIELDS terminated by ','
 (
    id_producto,
    nombre_producto,
-   precio_producto,
+   precio_producto "REPLACE(:precio_producto, '$')",
    stock_producto
 )

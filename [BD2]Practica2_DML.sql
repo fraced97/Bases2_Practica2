@@ -1,28 +1,39 @@
 /*
-#Copiar achivos de carpeta Carga P2 a docker home/oracle 
-docker cp 'Carga P2/.' 2d76b0603cab:home/oracle
+INSTRUCCIONES PARA CARGAR LAS TABLAS
 
+#COPIAR ARCHIVOS DE LA CARPETA CARGA EN DOCKER EN LA RUTA home/oracle 
+docker cp 'Carga/.' bf97febab64f:home/oracle
+----CARGAR EN TEMPORAL CLIENTE
 sqlldr userid=bases2/1234 control=cargaCliente.ctl
+----CARGAR EN TEMPORAL VENDEDOR
 sqlldr userid=bases2/1234 control=cargaVendedor.ctl
+----CARGAR EN TEMPORAL FACTURA
 sqlldr userid=bases2/1234 control=cargaFactura.ctl
+----CARGAR EN TEMPORAL PRODUCTO
 sqlldr userid=bases2/1234 control=cargaProducto.ctl
+----CARGAR EN TEMPORAL DETALLE
 sqlldr userid=bases2/1234 control=cargaDetalle.ctl
+
+*/
+
+/*
+-----------------------------> PROCEDIMIENTO PARA INGRESAR EN CARGA CLIENTE
 */
 
 CREATE OR REPLACE PROCEDURE CargaCliente IS
-    CURSOR punto IS
+    CURSOR arreglo IS
     SELECT * FROM Temp_Cliente;
-    fila NUMBER := 0;
+    elemento NUMBER := 0;
 BEGIN
-    FOR i IN punto LOOP
+    FOR i IN arreglo LOOP
         BEGIN
-            fila := fila + 1;
+            elemento := elemento + 1;
             INSERT INTO Cliente
             VALUES(i.id_cliente, i.nombre_cliente, i.apellido_cliente, i.direccion_cliente, i.dpi_cliente);                    
         EXCEPTION
           WHEN OTHERS THEN
-            INSERT INTO Errores(descripcion, id_obj, fila)
-            VALUES('Carga cliente', i.id_cliente, fila);       
+            INSERT INTO Errores(descripcion, id_obj, elemento)
+            VALUES('Cliente', i.id_cliente, elemento);       
         END;
     END LOOP;
 END;
@@ -31,27 +42,24 @@ BEGIN
     CargaCliente();
     COMMIT;
 END;
-
-SELECT COUNT(*) FROM Temp_Cliente; --1000
-SELECT COUNT(*) FROM Cliente; --972
-SELECT COUNT(*) FROM Errores; --28
-
-
+/*
+-----------------------------> PROCEDIMIENTO PARA INGRESAR EN CARGA VENDEDOR
+*/
 
 CREATE OR REPLACE PROCEDURE cargaVendedor IS
-    CURSOR punto IS
+    CURSOR arreglo IS
     SELECT * FROM Temp_Vendedor;
-    fila NUMBER := 0;
+    elemento NUMBER := 0;
 BEGIN
-    FOR i IN punto LOOP
+    FOR i IN arreglo LOOP
         BEGIN
-            fila := fila + 1;
+            elemento := elemento + 1;
             INSERT INTO Vendedor
             VALUES(i.id_vendedor, i.nombre_vendedor, i.apellido_vendedor, i.correo_vendedor, i.dpi_vendedor);                    
         EXCEPTION
           WHEN OTHERS THEN
-            INSERT INTO Errores(descripcion, id_obj, fila)
-            VALUES('Carga vendedor', i.id_vendedor, fila);       
+            INSERT INTO Errores(descripcion, id_obj, elemento)
+            VALUES('Vendedor', i.id_vendedor, elemento);       
         END;
     END LOOP;
 END;
@@ -61,25 +69,25 @@ BEGIN
     COMMIT;
 END;
 
-SELECT COUNT(*) FROM Temp_Vendedor; --1000
-SELECT COUNT(*) FROM Vendedor; --934
-SELECT COUNT(*) FROM Errores; --66 --94
+/*
+-----------------------------> PROCEDIMIENTO PARA INGRESAR EN CARGA FACTURA
+*/
 
 
 CREATE OR REPLACE PROCEDURE cargaFactura IS
-    CURSOR punto IS
+    CURSOR arreglo IS
     SELECT * FROM Temp_Factura;
-    fila NUMBER := 0;
+    elemento NUMBER := 0;
 BEGIN
-    FOR i IN punto LOOP
+    FOR i IN arreglo LOOP
         BEGIN
-            fila := fila + 1;
+            elemento := elemento + 1;
             INSERT INTO Factura
             VALUES(i.id_factura, i.id_cliente, i.id_vendedor, i.fecha_factura);                    
         EXCEPTION
           WHEN OTHERS THEN
-            INSERT INTO Errores(descripcion, id_obj, fila)
-            VALUES('Carga factura', i.id_factura, fila);       
+            INSERT INTO Errores(descripcion, id_obj, elemento)
+            VALUES('Factura', i.id_factura, elemento);       
         END;
     END LOOP;
 END;
@@ -89,27 +97,28 @@ BEGIN
     COMMIT;
 END;
 
-SELECT COUNT(*) FROM Temp_Factura; --1000
-SELECT COUNT(*) FROM Factura; --911
-SELECT COUNT(*) FROM Errores; --89 --183
+/*
+-----------------------------> PROCEDIMIENTO PARA INGRESAR EN CARGA PRODUCTO
+*/
+
 
 
 
 
 CREATE OR REPLACE PROCEDURE cargaProducto IS
-    CURSOR punto IS
+    CURSOR arreglo IS
     SELECT * FROM Temp_Producto;
-    fila NUMBER := 0;
+    elemento NUMBER := 0;
 BEGIN
-    FOR i IN punto LOOP
+    FOR i IN arreglo LOOP
         BEGIN
-            fila := fila + 1;
+            elemento := elemento + 1;
             INSERT INTO Producto
             VALUES(i.id_producto, i.nombre_producto, i.precio_producto, i.stock_producto);                    
         EXCEPTION
           WHEN OTHERS THEN
-            INSERT INTO Errores(descripcion, id_obj, fila)
-            VALUES('Carga producto', i.id_producto, fila);       
+            INSERT INTO Errores(descripcion, id_obj, elemento)
+            VALUES('Producto', i.id_producto, elemento);       
         END;
     END LOOP;
 END;
@@ -119,25 +128,25 @@ BEGIN
     COMMIT;
 END;
 
-SELECT COUNT(*) FROM Temp_Producto; --323
-SELECT COUNT(*) FROM Producto; --307
-SELECT COUNT(*) FROM Errores; --16 --199
+/*
+-----------------------------> PROCEDIMIENTO PARA INGRESAR EN CARGA DETALLE
+*/
 
 
 CREATE OR REPLACE PROCEDURE cargaDetalle IS
-    CURSOR punto IS
+    CURSOR arreglo IS
     SELECT * FROM Temp_Detalle;
-    fila NUMBER := 0;
+    elemento NUMBER := 0;
 BEGIN
-    FOR i IN punto LOOP
+    FOR i IN arreglo LOOP
         BEGIN
-            fila := fila + 1;
+            elemento := elemento + 1;
             INSERT INTO Detalle(id_factura, id_producto, cantidad, sub_total)
             VALUES(i.id_factura, i.id_producto, i.cantidad, 0.00);
         EXCEPTION
           WHEN OTHERS THEN
-            INSERT INTO Errores(descripcion, id_obj, fila)
-            VALUES('Carga detalle', fila, fila);
+            INSERT INTO Errores(descripcion, id_obj, elemento)
+            VALUES('Detalle', elemento, elemento);
         END;
     END LOOP;
     UPDATE Detalle D
@@ -154,7 +163,4 @@ BEGIN
     COMMIT;
 END;
 
-SELECT COUNT(*) FROM Temp_Detalle; --1999
-SELECT COUNT(*) FROM Detalle;
-SELECT COUNT(*) FROM Errores;
 

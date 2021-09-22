@@ -8,9 +8,7 @@ TRUNCATE
 INTO TABLE Temp_Detalle
 FIELDS terminated by ','
 (
-   id_detalle,
    id_factura,
    id_producto,
-   cantidad,
-   sub_total
+   cantidad
 )

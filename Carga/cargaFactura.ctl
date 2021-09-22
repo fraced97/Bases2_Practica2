@@ -11,5 +11,5 @@ FIELDS terminated by ','
    id_factura,
    id_cliente,
    id_vendedor,
-   fecha_factura
+   fecha_factura "TO_DATE(:fecha_factura, 'DD/MM/YYYY','NLS_DATE_LANGUAGE=ENGLISH')"
 )
