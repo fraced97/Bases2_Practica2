@@ -7,6 +7,7 @@ DISCARDFILE 'cargaProducto.dsc'
 TRUNCATE
 INTO TABLE Temp_Producto
 FIELDS terminated by ','
+OPTIONALLY ENCLOSED by ‘“‘
 (
    id_producto,
    nombre_producto,

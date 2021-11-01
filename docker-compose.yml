@@ -1,0 +1,60 @@
+version: "3"
+
+services:
+
+  mongo-master:
+    image: mongo:4
+    restart: always
+    container_name: GRUPO16_MONGO_MASTER
+    volumes:
+        - mongodatamaster:/data/db
+    ports:
+      - 2080:27017
+    entrypoint: [ "/usr/bin/mongod", "--replSet", "bd2_grupo16", "--bind_ip_all"]
+
+  mongo-1:
+    image: mongo:4
+    restart: always
+    container_name: GRUPO16_MONGO_01
+    volumes:
+        - mongodata1:/data/db
+    ports:
+      - 2081:27017
+    entrypoint: [ "/usr/bin/mongod", "--replSet", "bd2_grupo16", "--bind_ip_all"]
+
+  mongo-2:
+    image: mongo:4
+    restart: always
+    container_name: GRUPO16_MONGO_02
+    volumes:
+        - mongodata2:/data/db
+    ports:
+      - 2082:27017
+    entrypoint: [ "/usr/bin/mongod", "--replSet", "bd2_grupo16", "--bind_ip_all"]
+
+  mongo-3:
+    image: mongo:4
+    restart: always
+    container_name: GRUPO16_MONGO_03
+    volumes:
+        - mongodata3:/data/db
+    ports:
+      - 2083:27017
+    entrypoint: [ "/usr/bin/mongod", "--replSet", "bd2_grupo16", "--bind_ip_all"]
+
+  mongo-4:
+    image: mongo:4
+    restart: always
+    container_name: GRUPO16_MONGO_04
+    volumes:
+        - mongodata4:/data/db
+    ports:
+      - 2084:27017
+    entrypoint: [ "/usr/bin/mongod", "--replSet", "bd2_grupo16", "--bind_ip_all"]
+
+volumes:
+  mongodatamaster:
+  mongodata1:
+  mongodata2:
+  mongodata3:
+  mongodata4:
