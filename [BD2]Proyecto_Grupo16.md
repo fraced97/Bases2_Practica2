@@ -53,22 +53,22 @@ rsconf = {
        {
            "_id": 2,
            "host": "GRUPO16_MONGO_02:27017",
-           "priority": 1
+           "priority": 2
        },
        {
            "_id": 3,
            "host": "GRUPO16_MONGO_03:27017",
-           "priority": 1
+           "priority": 3
        },
        {
            "_id": 4,
            "host": "GRUPO16_MONGO_04:27017",
-           "priority": 2
+           "priority": 4
        },
        {
            "_id": 0,
            "host": "GRUPO16_MONGO_MASTER:27017",
-           "priority": 3
+           "priority": 5
        }
    ]
 }
